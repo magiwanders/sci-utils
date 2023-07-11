@@ -1,6 +1,6 @@
 console.log("SCI Utilities!");
 document.getElementById("calculate").onclick = async () => {
-  let e = m(document.getElementById("metric").value), t = await d(e);
+  let e = m(document.getElementById("metric").value), t = await g(e);
   document.getElementById("results").innerHTML = JSON.stringify(t, null, 4);
 };
 function m(e) {
@@ -55,13 +55,33 @@ function m(e) {
         fromCol: 0,
         toCol: 1
       };
+    case "energy":
+      return {
+        page: "List_of_countries_by_electricity_consumption",
+        title: "Energy consumption in exaJoule",
+        table: 1,
+        fromRow: 1,
+        toRow: 6,
+        fromCol: 0,
+        toCol: 1
+      };
+    case "refugees":
+      return {
+        page: "List_of_countries_by_refugee_population",
+        title: "Refugees or refugee-like population by hosting continent",
+        table: 2,
+        fromRow: 1,
+        toRow: 6,
+        fromCol: 0,
+        toCol: 1
+      };
   }
 }
-async function d(e) {
-  let t = "https://www.wikitable2json.com/api/" + e.page + "?table=" + e.table + "&lang=en&cleanRef=false", o = await fetch(t).then((i) => i.json().then((a) => a)), l = u(o[0], e.fromRow, e.toRow, e.fromCol, e.toCol);
-  return g(_(l), e.title);
+async function g(e) {
+  let t = "https://www.wikitable2json.com/api/" + e.page + "?table=" + e.table + "&lang=en&cleanRef=false", o = await fetch(t).then((a) => a.json().then((i) => i)), l = f(o[0], e.fromRow, e.toRow, e.fromCol, e.toCol);
+  return _(d(l), e.title);
 }
-function g(e, t) {
+function _(e, t) {
   let o = {
     title: t
   };
@@ -72,13 +92,13 @@ function g(e, t) {
     };
   return o;
 }
-function _(e) {
-  let t = w(e, 1), o = t.reduce((n, c) => n + c, 0), l = document.getElementById("participants").value, i = o / l, a = Math.min(...t), p = t.map((n) => l * (n - a) / (o - a)), r = p.map((n) => Math.round(n));
-  for (; P(r, l) != 0; ) {
+function d(e) {
+  let t = w(e, 1), o = t.reduce((n, c) => n + c, 0), l = document.getElementById("participants").value, a = o / l, i = Math.min(...t), u = t.map((n) => l * (n - i) / (o - i)), r = u.map((n) => Math.round(n));
+  for (; C(r, l) != 0; ) {
     let n = o, c = 0;
     for (let s = 0; s < r.length; s++) {
-      let f = Math.abs(p[s] - i * (r[s] + 1));
-      f < n && (n = f, c = s);
+      let p = Math.abs(u[s] - a * (r[s] + 1));
+      p < n && (n = p, c = s);
     }
     r[c] += 1;
   }
@@ -86,12 +106,12 @@ function _(e) {
     e[n].push(r[n]);
   return e.unshift(["Total", o, l]), e;
 }
-function u(e, t, o, l, i) {
-  return e.slice(t, o + 1).map((a) => a.slice(l, i + 1));
+function f(e, t, o, l, a) {
+  return e.slice(t, o + 1).map((i) => i.slice(l, a + 1));
 }
 function w(e, t) {
-  return u(e, 0, e.length, t, t + 1).map((o) => parseInt(o[0].replaceAll(",", "")));
+  return f(e, 0, e.length, t, t + 1).map((o) => parseInt(o[0].replaceAll(",", "")));
 }
-function P(e, t) {
+function C(e, t) {
   return t - e.reduce((o, l) => o + l, 0);
 }

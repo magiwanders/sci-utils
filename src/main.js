@@ -55,6 +55,24 @@ function getRequest(metric) {
             fromCol: 0,
             toCol: 1
         }
+        case 'energy': return {
+            page: 'List_of_countries_by_electricity_consumption',
+            title: 'Energy consumption in exaJoule',
+            table: 1, 
+            fromRow: 1,
+            toRow: 6,
+            fromCol: 0,
+            toCol: 1
+        }
+        case 'refugees': return {
+            page: 'List_of_countries_by_refugee_population',
+            title: 'Refugees or refugee-like population by hosting continent',
+            table: 2, 
+            fromRow: 1,
+            toRow: 6,
+            fromCol: 0,
+            toCol: 1
+        }
     }
 }
 
