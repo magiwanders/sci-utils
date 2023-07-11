@@ -1,9 +1,11 @@
+import { Table } from "./builders"
 console.log('SCI Utilities!')
 
 document.getElementById('calculate').onclick = async () => {
     let request = getRequest(document.getElementById('metric').value)
     let data = await getData(request)
-    document.getElementById('results').innerHTML = JSON.stringify(data, null, 4)
+    document.getElementById('results').innerHTML = ''
+    document.getElementById('results').append(Table(data))
 
 }
 
@@ -90,9 +92,10 @@ function jsonify(table, title) {
     }
     for (let continent of table) {
         json[continent[0]] = {
-            reale: continent[1],
-            persone: continent[2]
+            reale: continent[1].toString(),
+            persone: parseFloat(continent[2])
         } 
+        if (continent[0]=='Total') json['Total'].onePerson = continent[3]
     }
     return json
 }
@@ -120,7 +123,7 @@ function scaleData(continentList) {
         integerScaledData[ii]+=1
     }
     for(let i in continentList) continentList[i].push(integerScaledData[i])
-    continentList.unshift(['Total', total, scaledTotal])
+    continentList.unshift(['Total', total, scaledTotal, onePerson])
     return continentList
 }
 
